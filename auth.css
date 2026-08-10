@@ -1,0 +1,336 @@
+/* ONYX AUTH — Étape 1 : connexion Google, session, profil, déconnexion */
+
+body.onyx-auth-pending,
+body.onyx-auth-locked {
+  overflow: hidden;
+}
+
+body.onyx-auth-pending .app,
+body.onyx-auth-locked .app {
+  visibility: hidden;
+}
+
+.onyx-auth-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  display: none;
+  place-items: center;
+  padding: 28px;
+  background:
+    radial-gradient(circle at 12% 5%, rgba(124,58,237,.18), transparent 34%),
+    radial-gradient(circle at 88% 10%, rgba(6,182,212,.16), transparent 32%),
+    linear-gradient(145deg, #0b1020 0%, #111827 50%, #172033 100%);
+  color: #f8fafc;
+}
+
+body.onyx-auth-pending .onyx-auth-gate,
+body.onyx-auth-locked .onyx-auth-gate {
+  display: grid;
+}
+
+.onyx-auth-shell {
+  width: min(1060px, 100%);
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(360px, .9fr);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 30px;
+  background: rgba(15,23,42,.82);
+  box-shadow: 0 35px 110px rgba(0,0,0,.38);
+  backdrop-filter: blur(18px);
+}
+
+.onyx-auth-brand {
+  min-height: 610px;
+  padding: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background:
+    linear-gradient(135deg, rgba(124,58,237,.16), rgba(6,182,212,.07)),
+    rgba(255,255,255,.025);
+}
+
+.onyx-auth-logo {
+  width: 62px;
+  height: 62px;
+  border-radius: 19px;
+  display: grid;
+  place-items: center;
+  font-weight: 950;
+  letter-spacing: -.04em;
+  color: #fff;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  box-shadow: 0 18px 42px rgba(0,0,0,.3);
+}
+
+.onyx-auth-kicker {
+  margin-top: 30px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: #67e8f9;
+}
+
+.onyx-auth-brand h1 {
+  max-width: 620px;
+  margin: 12px 0 14px;
+  font-size: clamp(38px, 5vw, 66px);
+  line-height: .98;
+  letter-spacing: -.055em;
+  color: #fff;
+}
+
+.onyx-auth-brand p {
+  max-width: 610px;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.72;
+  color: rgba(226,232,240,.76);
+}
+
+.onyx-auth-points {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 10px;
+  margin-top: 32px;
+}
+
+.onyx-auth-point {
+  padding: 13px;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 15px;
+  background: rgba(255,255,255,.035);
+}
+
+.onyx-auth-point strong {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.onyx-auth-point span {
+  font-size: 10.5px;
+  line-height: 1.45;
+  color: rgba(226,232,240,.61);
+}
+
+.onyx-auth-footnote {
+  font-size: 11px;
+  color: rgba(226,232,240,.48);
+}
+
+.onyx-auth-panel {
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #fff;
+  color: #111827;
+}
+
+.onyx-auth-panel .mini-brand {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #7c3aed;
+}
+
+.onyx-auth-panel h2 {
+  margin: 10px 0 8px;
+  font-size: 30px;
+  letter-spacing: -.035em;
+}
+
+.onyx-auth-panel .auth-copy {
+  margin: 0 0 24px;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: #64748b;
+}
+
+.onyx-google-btn {
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid #d8dee8;
+  border-radius: 14px;
+  background: #fff;
+  color: #111827;
+  font: inherit;
+  font-weight: 850;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(15,23,42,.06);
+  transition: .18s ease;
+}
+
+.onyx-google-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(15,23,42,.1);
+  border-color: #cbd5e1;
+}
+
+.onyx-google-btn:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.onyx-google-mark {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e5e7eb;
+  font-weight: 950;
+  font-family: Arial, sans-serif;
+  color: #2563eb;
+}
+
+.onyx-auth-status {
+  min-height: 38px;
+  margin-top: 14px;
+  padding: 10px 11px;
+  border-radius: 11px;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: #64748b;
+  background: #f8fafc;
+  border: 1px solid #eef2f7;
+}
+
+.onyx-auth-status.error {
+  color: #b91c1c;
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.onyx-auth-security {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid #e5e7eb;
+  font-size: 10.5px;
+  line-height: 1.55;
+  color: #94a3b8;
+}
+
+.onyx-user-box {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.onyx-user-trigger {
+  border: 1px solid var(--border, #dfe6ef);
+  background: var(--surface, #fff);
+  color: var(--text, #111827);
+  border-radius: 14px;
+  padding: 6px 9px 6px 7px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  box-shadow: 0 7px 18px rgba(15,23,42,.05);
+}
+
+.onyx-user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  object-fit: cover;
+  background: #e2e8f0;
+}
+
+.onyx-user-fallback {
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  font-weight: 900;
+}
+
+.onyx-user-copy {
+  max-width: 150px;
+  text-align: left;
+}
+
+.onyx-user-copy strong,
+.onyx-user-copy span {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.onyx-user-copy strong { font-size: 11.5px; }
+.onyx-user-copy span { font-size: 9.5px; color: var(--muted, #64748b); margin-top: 2px; }
+
+.onyx-user-chevron { font-size: 10px; color: var(--muted, #64748b); }
+
+.onyx-user-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 9px);
+  width: 250px;
+  z-index: 100;
+  display: none;
+  border: 1px solid var(--border, #dfe6ef);
+  border-radius: 16px;
+  background: var(--surface, #fff);
+  box-shadow: 0 24px 60px rgba(15,23,42,.17);
+  padding: 8px;
+}
+
+.onyx-user-box.open .onyx-user-menu { display: block; }
+
+.onyx-user-menu-head {
+  padding: 10px;
+  border-bottom: 1px solid var(--border, #dfe6ef);
+  margin-bottom: 6px;
+}
+
+.onyx-user-menu-head strong,
+.onyx-user-menu-head span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.onyx-user-menu-head strong { font-size: 12px; }
+.onyx-user-menu-head span { margin-top: 3px; font-size: 10.5px; color: var(--muted, #64748b); }
+
+.onyx-user-menu button {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #b91c1c;
+}
+
+.onyx-user-menu button:hover { background: #fef2f2; }
+
+@media (max-width: 820px) {
+  .onyx-auth-shell { grid-template-columns: 1fr; }
+  .onyx-auth-brand { min-height: auto; padding: 34px; }
+  .onyx-auth-panel { padding: 34px; }
+  .onyx-auth-points { grid-template-columns: 1fr; }
+  .onyx-auth-brand h1 { font-size: 42px; }
+  .onyx-user-copy { display: none; }
+}

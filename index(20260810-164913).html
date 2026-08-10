@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Onyx Data Intelligence — Reporting adaptatif et analyse experte</title>
+<meta content="Application HTML autonome d’analyse experte, de structuration des variables et de génération de rapports professionnels." name="description"/>
+
+
+
+
+
+<meta content="#111827" name="theme-color"/><link href="./css/onyx.css" rel="stylesheet"/><link href="./css/auth.css" rel="stylesheet"/></head>
+<body class="onyx-auth-pending">
+<div class="onyx-auth-gate" id="onyxAuthGate" aria-hidden="false">
+  <div class="onyx-auth-shell">
+    <section class="onyx-auth-brand">
+      <div>
+        <div class="onyx-auth-logo">OD</div>
+        <div class="onyx-auth-kicker">Onyx Data Intelligence</div>
+        <h1>Transformez vos données en décisions.</h1>
+        <p>Un espace analytique sécurisé pour explorer les données, détecter les signaux utiles et produire des rapports décisionnels professionnels.</p>
+        <div class="onyx-auth-points">
+          <div class="onyx-auth-point"><strong>Analyse intelligente</strong><span>Qualité, statistiques, anomalies, tendances et recommandations.</span></div>
+          <div class="onyx-auth-point"><strong>Reporting exécutif</strong><span>Rapports adaptés au public, à l’objectif et au niveau de profondeur.</span></div>
+          <div class="onyx-auth-point"><strong>Confidentialité</strong><span>Les fichiers analysés restent localement dans le navigateur par défaut.</span></div>
+        </div>
+      </div>
+      <div class="onyx-auth-footnote">Onyx Data Intelligence · Secure Analytics Workspace</div>
+    </section>
+    <section class="onyx-auth-panel">
+      <div class="mini-brand">Accès sécurisé</div>
+      <h2>Bienvenue dans Onyx</h2>
+      <p class="auth-copy">Connectez-vous avec Google pour ouvrir votre espace de travail et accéder au moteur d’analyse.</p>
+      <button class="onyx-google-btn" id="onyxGoogleLoginBtn" type="button">
+        <span class="onyx-google-mark">G</span>
+        <span>Continuer avec Google</span>
+      </button>
+      <div class="onyx-auth-status" id="onyxAuthStatus">Vérification de la session…</div>
+      <div class="onyx-auth-security">La connexion est gérée par Supabase Auth et Google OAuth. Onyx ne demande jamais votre mot de passe Google.</div>
+    </section>
+  </div>
+</div>
+<div class="loading-overlay" id="loadingOverlay"><div class="loader-card"><div class="spinner"></div><h3 id="loadingTitle">Analyse en cours</h3><p class="subtitle" id="loadingText">Préparation des indicateurs et des modèles statistiques…</p></div></div>
+<div class="app">
+<aside class="sidebar">
+<div class="brand"><div class="brand-mark">OD</div><div><div class="brand-title">Onyx Data Intelligence</div><div class="brand-subtitle">Ultimate Analytics &amp; Reporting Suite</div></div></div>
+<div class="side-label">Rapport analytique</div>
+<nav class="nav">
+<button class="active" data-section="overview">◫ Cockpit décisionnel</button>
+<button data-section="executive">◆ Synthèse exécutive</button>
+<button data-section="quality">✓ Qualité &amp; risques</button>
+<button data-section="descriptive">∑ Analyse descriptive</button>
+<button data-section="periodic">▥ Statistiques périodiques</button>
+<button data-section="relationships">⌁ Relations &amp; modèles</button>
+<button data-section="temporal">↗ Tendances temporelles</button>
+<button data-section="segmentation">◎ Segmentation &amp; PCA</button>
+<button data-section="recommendations">✦ Plan d'action</button>
+<button data-section="governance">⌘ Variables &amp; filtres</button>
+<button data-section="cleaning">⌫ Nettoyage intelligent</button>
+<button data-section="expertStatistics">ƒ Tests &amp; prévisions</button>
+<button data-section="anomalyExplorer">⚠ Anomalies détaillées</button>
+<button data-section="data">▤ Données &amp; annexes</button>
+</nav>
+<div class="side-label">État de l'analyse</div>
+<div class="side-card" id="sideStatus">Aucun fichier chargé. Importez vos données pour lancer l'analyse multidimensionnelle.</div>
+<div class="side-card"><strong>Confiance analytique</strong><div id="sideConfidence" style="font-size:23px;font-weight:950;margin-top:5px">—</div><div class="side-meter"><span id="sideConfidenceBar"></span></div><div id="sideConfidenceText" style="margin-top:9px">Non calculée</div></div>
+<div class="side-card"><strong>Traitement local</strong><br/>Les données restent dans votre navigateur. Aucun envoi vers un serveur n'est effectué par cette page.</div>
+</aside>
+<main class="main" id="appRoot">
+<header class="topbar">
+<div><div class="eyebrow">◈ Analyse exploratoire · statistique · décisionnelle</div><h1>Du fichier brut au rapport adapté à chaque décideur.</h1><p class="lead">Onyx comprend la structure des données, sélectionne les analyses pertinentes et recompose le rapport selon le public, la profondeur et l’objectif : finance, opérations, marketing, impact, risques, pilotage ou expertise statistique.</p></div>
+<div class="actions"><button class="btn" id="demoBtn">Démonstration</button><button class="btn btn-primary" disabled="" id="reportBtn">Générer le rapport</button><button class="btn btn-dark" disabled="" id="pdfBtn">Rapport PDF</button><button class="btn" disabled="" id="htmlBtn">Rapport HTML</button><button class="btn btn-danger" disabled="" id="resetBtn">Réinitialiser</button></div>
+</header>
+<section class="panel" id="uploadPanel">
+<div class="panel-header"><div><h2>Importer et cadrer l'étude</h2><p class="subtitle">CSV, XLSX, XLS et JSON. Pour Excel, la première feuille exploitable est analysée automatiquement.</p></div><span class="badge">Analyse locale</span></div>
+<div class="upload" id="dropZone"><div><div class="upload-icon">⇧</div><strong>Déposez votre fichier de données</strong><p>Le moteur établira automatiquement un profil analytique complet.</p><button class="btn btn-primary" id="browseBtn">Choisir un fichier</button><input accept=".csv,.xlsx,.xls,.json" class="hidden" id="fileInput" type="file"/></div></div>
+<div class="config-grid">
+<div class="field"><label>Public du rapport</label><select id="audience"><option value="board">Conseil d’administration / Comité exécutif</option><option selected="" value="direction">Direction générale</option><option value="finance">Direction financière / CFO</option><option value="management">Direction opérationnelle</option><option value="marketing">Marketing / Commercial</option><option value="bailleurs">Bailleurs et partenaires</option><option value="decideurs">Décideurs publics / institutionnels</option><option value="audit">Audit / Risques / Conformité</option><option value="analystes">Analystes / Data scientists</option><option value="public">Communication / Public général</option></select></div>
+<div class="field"><label>Profondeur</label><select id="depth"><option value="essential">Essentielle</option><option selected="" value="advanced">Approfondie</option><option value="expert">Expert / technique</option></select></div>
+<div class="field"><label>Objectif</label><select id="objective"><option value="general">Diagnostic intelligent automatique</option><option value="performance">Performance &amp; pilotage</option><option value="finance">Finance, rentabilité &amp; efficience</option><option value="operations">Opérations, capacité &amp; productivité</option><option value="marketing">Marketing, acquisition &amp; canaux</option><option value="sales">Ventes &amp; performance commerciale</option><option value="customer">Clients, satisfaction &amp; fidélisation</option><option value="hr">Ressources humaines</option><option value="inventory">Stock, achats &amp; logistique</option><option value="projects">Projets &amp; portefeuille</option><option value="risk">Risques, fraude &amp; contrôle</option><option value="quality">Qualité / conformité</option><option value="impact">Impact, résultats &amp; bailleurs</option><option value="forecast">Prévision &amp; scénarios</option></select></div>
+<div class="field"><label>Palette du dashboard et du rapport</label><select id="palette"><option value="onyx">Onyx Executive</option><option value="corporate">Corporate Blue</option><option value="ocean">Ocean Analytics</option><option value="teal">Teal Intelligence</option><option value="forest">Impact Green</option><option value="sunset">Sunset Strategy</option><option value="burgundy">Burgundy Boardroom</option><option value="royal">Royal Insight</option><option value="sand">Sand &amp; Gold</option><option value="haiti">Haiti Signature</option><option value="mono">Monochrome Pro</option><option value="custom">Palette personnalisée</option></select></div>
+</div>
+<div class="meta-grid"><div class="field"><label>Titre du rapport</label><input id="reportTitle" value="Rapport d'analyse approfondie des données"/></div><div class="field"><label>Organisation</label><input id="organization" placeholder="Nom de l'organisation"/></div><div class="field"><label>Préparé par</label><input id="author" placeholder="Nom de l'analyste"/></div></div>
+<div class="report-intelligence" id="reportIntelligence">
+<div class="report-intelligence-head"><div><span class="intelligence-kicker">Moteur de reporting adaptatif</span><h3 id="profileTitle">Profil Direction générale</h3></div><span class="badge success" id="domainBadge">Expertise automatique</span></div>
+<div class="intelligence-grid">
+<div><span>Priorités du destinataire</span><strong id="audienceFocus">Décision, performance, risques et arbitrages.</strong></div>
+<div><span>Niveau de détail</span><strong id="detailPolicy">Analyse approfondie, détails techniques limités.</strong></div>
+<div><span>Ce qui sera privilégié</span><strong id="sectionsPolicy">KPI, tendances, écarts, risques, recommandations et plan d’action.</strong></div>
+<div><span>Ce qui sera volontairement épargné</span><strong id="omissionPolicy">Calculs intermédiaires et tableaux techniques non matériels.</strong></div>
+</div>
+<p class="intelligence-note">Principe : pertinence pour le destinataire, équilibre entre détail et utilisabilité, intégration des résultats et des ressources, traçabilité des preuves et absence de chiffres inventés. Les éléments non alimentés sont supprimés du rapport.</p>
+</div>
+<div class="palette-studio">
+<div class="palette-studio-head"><div><strong>Studio visuel du rapport</strong><div class="theme-caption">Choisissez une palette prédéfinie ou personnalisez les couleurs principales. Les graphiques, titres, tableaux, couvertures et accents du rapport utiliseront automatiquement cette identité visuelle.</div></div><div aria-label="Aperçu de la palette" class="palette-preview" id="palettePreview"><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+<div class="color-input-grid">
+<div class="color-control"><label>Couleur principale</label><input id="customPrimary" type="color" value="#111827"/></div>
+<div class="color-control"><label>Couleur secondaire</label><input id="customPrimary2" type="color" value="#1f2937"/></div>
+<div class="color-control"><label>Accent 1</label><input id="customAccent" type="color" value="#7c3aed"/></div>
+<div class="color-control"><label>Accent 2</label><input id="customAccent2" type="color" value="#06b6d4"/></div>
+<div class="color-control"><label>Fond du dashboard</label><input id="customBg" type="color" value="#eef2f7"/></div>
+<div class="color-control"><label>Style du rapport</label><select id="reportTheme"><option value="editorial">Éditorial clair</option><option value="executive">Executive sombre</option><option value="institutional">Institutionnel</option><option value="minimal">Minimal premium</option></select></div>
+</div>
+</div>
+<div class="status-strip"><div><span class="status-dot" id="statusDot"></span><span id="fileStatus">En attente d'un fichier.</span></div><div id="analysisTime">Analyse non lancée</div></div>
+</section>
+<section class="kpis">
+<div class="kpi"><div class="kpi-label">Enregistrements</div><div class="kpi-value" id="kpiRows">—</div><div class="kpi-note" id="kpiRowsNote">Lignes exploitables</div></div>
+<div class="kpi"><div class="kpi-label">Entités / identifiants</div><div class="kpi-value" id="kpiCols">—</div><div class="kpi-note" id="kpiColsNote">Clé principale détectée</div></div>
+<div class="kpi"><div class="kpi-label">Revenus / montants</div><div class="kpi-value" id="kpiComplete">—</div><div class="kpi-note" id="kpiCompleteNote">Somme de la mesure financière</div></div>
+<div class="kpi"><div class="kpi-label">Volume opérationnel</div><div class="kpi-value" id="kpiQuality">—</div><div class="kpi-note" id="kpiQualityNote">Quantité ou nombre d'activités</div></div>
+<div class="kpi"><div class="kpi-label">Période couverte</div><div class="kpi-value" id="kpiAnomalies">—</div><div class="kpi-note" id="kpiAnomaliesNote">Date de référence</div></div>
+<div class="kpi"><div class="kpi-label">Qualité des données</div><div class="kpi-value" id="kpiConfidence">—</div><div class="kpi-note" id="kpiConfidenceNote">Score composite /100</div></div>
+</section>
+<section class="section active" id="overview">
+<div class="grid-2">
+<article class="panel"><div class="panel-header"><div><h2>Cockpit décisionnel</h2><p class="subtitle">Les signaux à retenir avant toute lecture détaillée.</p></div><span class="badge success" id="decisionBadge">À générer</span></div><div class="grid-3" id="decisionCards"><div class="empty" style="grid-column:1/-1">Importez un fichier pour activer le cockpit.</div></div><div id="keySignals" style="margin-top:16px"></div></article>
+<article class="panel"><div class="panel-header"><div><h2>Architecture métier du fichier</h2><p class="subtitle">Répartition des variables selon leur utilité décisionnelle.</p></div></div><div class="chart chart-sm" id="typeChart"><div class="empty">Aucune donnée.</div></div></article>
+</div>
+<article class="panel">
+<div class="panel-header"><div><h2>Architecture structurée des variables</h2><p class="subtitle">Les colonnes sont regroupées par fonction métier afin de distinguer les clés, les mesures, les axes d’analyse et les variables de pilotage.</p></div><span class="badge info" id="businessCoverageBadge">À analyser</span></div>
+<div class="business-grid" id="businessMetricCards"><div class="empty" style="grid-column:1/-1">Importez un fichier pour détecter les variables métier prioritaires.</div></div>
+<div class="variable-family-summary" id="variableFamilySummary"><div class="empty" style="grid-column:1/-1;min-height:90px">Les familles de variables apparaîtront ici.</div></div>
+<div class="variable-family-grid" id="variableFamilyGrid"><div class="empty" style="grid-column:1/-1">Aucune architecture de variables disponible.</div></div>
+<div class="grid-2">
+<div>
+<h3>Registre des variables prioritaires</h3>
+<div class="table-wrap"><table class="business-table"><thead><tr><th>Variable</th><th>Famille</th><th>Rôle</th><th>Priorité</th><th>Agrégation</th><th>Valeur utile</th></tr></thead><tbody id="businessVariablesTable"><tr><td colspan="6">Aucune donnée.</td></tr></tbody></table></div>
+</div>
+<div>
+<h3>Lecture décisionnelle</h3>
+<div class="callout" id="businessNarrative">Le diagnostic métier apparaîtra après l'importation.</div>
+<div class="coverage-strip" id="businessCoverage"></div>
+</div>
+</div>
+</article>
+<div class="grid-2">
+<article class="panel"><div class="panel-header"><div><h2>Profil de complétude</h2><p class="subtitle">Variables présentant les déficits d'information les plus importants.</p></div></div><div class="chart" id="missingChart"><div class="empty">Aucune donnée.</div></div></article>
+<article class="panel"><div class="panel-header"><div><h2>Distribution stratégique</h2><p class="subtitle">Forme, dispersion et valeurs atypiques de la variable sélectionnée.</p></div><div class="field" style="min-width:190px"><select id="distributionColumn"></select></div></div><div class="chart" id="distributionChart"><div class="empty">Aucune variable numérique.</div></div></article>
+</div>
+</section>
+<section class="section" id="executive">
+<article class="panel"><div class="panel-header"><div><h2>Synthèse exécutive adaptée au destinataire</h2><p class="subtitle">Narration automatiquement ajustée au public, à l'objectif et au niveau de profondeur.</p></div><span class="badge" id="audienceBadge">Direction générale</span></div><div class="callout" id="executiveNarrative">La synthèse apparaîtra après l'importation.</div><div class="insights" id="executiveInsights" style="margin-top:15px"><div class="empty">Aucune synthèse disponible.</div></div></article>
+<div class="grid-3" id="executivePillars"><div class="empty" style="grid-column:1/-1">Les piliers de décision seront générés ici.</div></div>
+<article class="panel"><div class="panel-header"><div><h2>Cadre méthodologique</h2><p class="subtitle">Méthodes appliquées automatiquement et limites d'interprétation.</p></div></div><div class="grid-4" id="methodGrid"></div></article>
+</section>
+<section class="section" id="quality">
+<div class="grid-2">
+<article class="panel"><div class="panel-header"><div><h2>Indice de qualité des données</h2><p class="subtitle">Combinaison pondérée de la complétude, de l'unicité, de la cohérence et du risque d'anomalies.</p></div></div><div class="score-box"><div class="score-ring" id="qualityRing"><strong id="qualityRingText">—</strong></div><div><div class="callout" id="qualityNarrative">Le diagnostic apparaîtra après l'importation.</div><div id="qualityMetrics"></div></div></div></article>
+<article class="panel"><div class="panel-header"><div><h2>Cartographie des risques</h2><p class="subtitle">Concentration des problèmes susceptibles d'affecter les décisions.</p></div></div><div class="chart chart-sm" id="qualityRiskChart"><div class="empty">Aucune donnée.</div></div></article>
+</div>
+<article class="panel"><div class="panel-header"><div><h2>Diagnostic par variable</h2><p class="subtitle">Type, rôle, valeurs manquantes, unicité, dispersion et niveau de risque.</p></div></div><div class="table-wrap"><table><thead><tr><th>Variable</th><th>Rôle métier</th><th>Type technique</th><th>Utilité décisionnelle</th><th>Renseignée</th><th>Unicité</th><th>Distinctes</th><th>Anomalies</th><th>Risque</th></tr></thead><tbody id="qualityTable"><tr><td colspan="9">Aucune donnée.</td></tr></tbody></table></div></article>
+<article class="panel"><div class="panel-header"><div><h2>Observations atypiques prioritaires</h2><p class="subtitle">Classement multivarié combinant valeurs extrêmes robustes et informations manquantes.</p></div></div><div class="table-wrap"><table><thead><tr><th>Ligne</th><th>Score d'anomalie</th><th>Variables contributrices</th><th>Valeurs manquantes</th><th>Niveau</th></tr></thead><tbody id="anomalyTable"><tr><td colspan="5">Aucune donnée.</td></tr></tbody></table></div></article>
+</section>
+<section class="section" id="descriptive">
+<div class="grid-2">
+<article class="panel"><div class="panel-header"><div><h2>Distribution et densité</h2><p class="subtitle">Lecture de la tendance centrale, de la dispersion et de l'asymétrie.</p></div><div class="field" style="min-width:190px"><select id="statsColumn"></select></div></div><div class="chart" id="statsHistogram"><div class="empty">Aucune donnée.</div></div><div class="callout" id="distributionNarrative">Sélectionnez une variable numérique.</div></article>
+<article class="panel"><div class="panel-header"><div><h2>Boîte à moustaches</h2><p class="subtitle">Quartiles, étendue interquartile et valeurs extrêmes.</p></div></div><div class="chart" id="boxChart"><div class="empty">Aucune donnée.</div></div></article>
+</div>
+<article class="panel"><div class="panel-header"><div><h2>Statistiques descriptives enrichies</h2><p class="subtitle">Indicateurs de position, dispersion, forme et stabilité.</p></div></div><div class="table-wrap"><table><thead><tr><th>Variable</th><th>N</th><th>Moyenne</th><th>Médiane</th><th>Écart-type</th><th>CV</th><th>P10</th><th>Q1</th><th>Q3</th><th>P90</th><th>Asymétrie</th><th>Kurtosis</th><th>Outliers</th></tr></thead><tbody id="statsTable"><tr><td colspan="13">Aucune donnée.</td></tr></tbody></table></div></article>
+<div class="grid-2">
+<article class="panel"><div class="panel-header"><div><h2>Structure catégorielle</h2><p class="subtitle">Concentration, diversité et catégorie dominante.</p></div><div class="field" style="min-width:190px"><select id="categoryColumn"></select></div></div><div class="chart" id="categoryChart"><div class="empty">Aucune variable catégorielle.</div></div></article>
+<article class="panel"><div class="panel-header"><div><h2>Lecture de concentration</h2><p class="subtitle">Indice HHI, entropie et niveau de dépendance à une catégorie.</p></div></div><div class="callout" id="categoryNarrative">Aucune analyse catégorielle disponible.</div><div class="grid-2" id="categoryCards" style="margin-top:15px"></div></article>
+</div>
+</section>
+<section class="section" id="periodic">
+<article class="panel period-hero">
+<div class="panel-header"><div><div class="section-ribbon">Statistique temporelle avancée</div><h2 style="margin-top:10px">Analyse mensuelle et annuelle complète</h2><p class="subtitle">Nombre, volume, moyenne, médiane, variance, écart-type, coefficient de variation, croissance, saisonnalité et stabilité pour la mesure sélectionnée.</p></div><div class="toolbar"><div class="field" style="min-width:180px"><label>Date de référence</label><select id="periodicDate"></select></div><div class="field" style="min-width:190px"><label>Mesure analysée</label><select id="periodicMetric"></select></div></div></div>
+<div class="period-kpis">
+<div class="period-kpi"><div class="label">Nombre daté</div><div class="value" id="periodCount">—</div><div class="note">Observations temporelles</div></div>
+<div class="period-kpi"><div class="label">Volume total</div><div class="value" id="periodVolume">—</div><div class="note">Somme de la mesure</div></div>
+<div class="period-kpi"><div class="label">Moyenne mensuelle</div><div class="value" id="periodMonthlyMean">—</div><div class="note">Volume moyen par mois</div></div>
+<div class="period-kpi"><div class="label">Écart-type mensuel</div><div class="value" id="periodMonthlyStd">—</div><div class="note">Dispersion des volumes</div></div>
+<div class="period-kpi"><div class="label">Croissance annuelle</div><div class="value" id="periodAnnualGrowth">—</div><div class="note">Dernière année comparable</div></div>
+<div class="period-kpi"><div class="label">Meilleur mois</div><div class="value" id="periodBestMonth">—</div><div class="note" id="periodBestMonthNote">Volume maximal</div></div>
+</div>
+</article>
+<article class="panel"><div class="panel-header"><div><h2>Interprétation statistique</h2><p class="subtitle">Lecture automatisée de la trajectoire, de la volatilité et des ruptures.</p></div><span class="badge info" id="periodCoverageBadge">Aucune période</span></div><div class="callout" id="periodNarrative">Importez un fichier contenant une date et une variable numérique.</div><div class="stat-explainer" id="periodInsights" style="margin-top:15px"><div class="empty" style="grid-column:1/-1">Aucune analyse périodique.</div></div></article>
+<div class="grid-2">
+<article class="panel"><div class="panel-header"><div><h2>Volume et nombre par mois</h2><p class="subtitle">Diagramme en bâtons du volume total et courbe du nombre d'observations.</p></div></div><div class="chart" id="monthlyVolumeChart"><div class="empty">Aucune série mensuelle.</div></div><p class="chart-note">Les barres représentent la somme mensuelle de la mesure ; la ligne utilise l'axe secondaire pour le nombre d'enregistrements.</p></article>
+<article class="panel"><div class="panel-header"><div><h2>Moyenne et écart-type mensuels</h2><p class="subtitle">Niveau moyen par observation et dispersion à l'intérieur de chaque mois.</p></div></div><div class="chart" id="monthlyDispersionChart"><div class="empty">Aucune série mensuelle.</div></div><p class="chart-note">Les barres d'erreur correspondent à ±1 écart-type autour de la moyenne mensuelle.</p></article>
+</div>
+<div class="grid-2">
+<article class="panel"><div class="panel-header"><div><h2>Synthèse annuelle</h2><p class="subtitle">Comparaison des volumes, moyennes et effectifs entre les années.</p></div></div><div class="chart" id="annualSummaryChart"><div class="empty">Aucune synthèse annuelle.</div></div></article>
+<article class="panel"><div class="panel-header"><div><h2>Profil saisonnier</h2><p class="subtitle">Comportement moyen de janvier à décembre, toutes années confondues.</p></div></div><div class="chart" id="seasonalityChart"><div class="empty">Aucune saisonnalité calculable.</div></div></article>
+</div>
+<article class="panel"><div class="panel-header"><div><h2>Tableaux statistiques par période</h2><p class="subtitle">Détail mensuel et annuel : nombre, volume, moyenne, médiane, écart-type, variance, minimum, maximum, coefficient de variation et croissance.</p></div></div><div class="period-tables"><div><h3>Statistiques mensuelles</h3><div class="table-wrap"><table><thead><tr><th>Période</th><th>Nombre</th><th>Valides</th><th>Volume</th><th>Moyenne</th><th>Médiane</th><th>Écart-type</th><th>Variance</th><th>CV</th><th>Min</th><th>Max</th><th>Var. mensuelle</th><th>Var. annuelle</th></tr></thead><tbody id="monthlyStatsTable"><tr><td colspan="13">Aucune donnée.</td></tr></tbody></table></div></div><div><h3>Statistiques annuelles</h3><div class="table-wrap"><table><thead><tr><th>Année</th><th>Nombre</th><th>Volume</th><th>Moyenne</th><th>Écart-type</th><th>CV</th><th>Croissance</th></tr></thead><tbody id="annualStatsTable"><tr><td colspan="7">Aucune donnée.</td></tr></tbody></table></div></div></div></article>
+</section>
+<section class="section" id="relationships">
+<article class="panel"><div class="panel-header"><div><h2>Matrice de corrélation de Pearson</h2><p class="subtitle">Relations linéaires entre variables numériques. Une corrélation ne prouve pas une causalité.</p></div><span class="badge info" id="corrBadge">0 relation</span></div><div class="chart" id="correlationChart"><div class="empty">Au moins deux variables numériques sont nécessaires.</div></div></article>
+<div class="grid-2">
+<article class="panel"><div class="panel-header"><div><h2>Régression exploratoire</h2><p class="subtitle">Droite de tendance, coefficient de détermination et sensibilité marginale.</p></div><div class="toolbar"><select id="scatterX"></select><select id="scatterY"></select></div></div><div class="chart" id="scatterChart"><div class="empty">Aucune relation disponible.</div></div><div class="callout" id="regressionNarrative">Sélectionnez deux variables numériques.</div></article>
+<article class="panel"><div class="panel-header"><div><h2>Associations catégorielles</h2><p class="subtitle">Force d'association mesurée par le V de Cramér.</p></div></div><div class="chart" id="cramerChart"><div class="empty">Au moins deux variables catégorielles sont nécessaires.</div></div></article>
+</div>
+<article class="panel"><div class="panel-header"><div><h2>Relations remarquables</h2><p class="subtitle">Classement des liens les plus structurants détectés dans le fichier.</p></div></div><div class="grid-3" id="relationshipCards"><div class="empty" style="grid-column:1/-1">Aucune relation calculée.</div></div></article>
+</section>
+<section class="section" id="temporal">
+<article class="panel"><div class="panel-header"><div><h2>Tendances temporelles</h2><p class="subtitle">Évolution, variation, volatilité et direction de tendance pour les séries datées.</p></div><div class="toolbar"><select id="dateColumn"></select><select id="timeMetric"></select></div></div><div class="chart" id="timeChart"><div class="empty">Aucune dimension temporelle détectée.</div></div><div class="callout" id="timeNarrative">L'analyse temporelle sera activée lorsqu'une date et une mesure numérique seront disponibles.</div></article>
+<div class="grid-3" id="trendCards"><div class="empty" style="grid-column:1/-1">Aucune tendance calculée.</div></div>
+</section>
+<section class="section" id="segmentation">
+<article class="panel"><div class="panel-header"><div><h2>Segmentation multivariée</h2><p class="subtitle">Réduction de dimension par PCA puis regroupement K-means des observations comparables.</p></div><div class="toolbar"><label style="font-size:12px;color:var(--muted)">Groupes</label><input id="clusterK" max="8" min="2" style="width:70px;border:1px solid var(--border);border-radius:10px;padding:8px" type="number" value="3"/><button class="btn btn-primary btn-sm" disabled="" id="clusterBtn">Calculer</button></div></div><div class="chart" id="pcaChart"><div class="empty">Au moins trois variables numériques et suffisamment de lignes complètes sont nécessaires.</div></div><div class="callout" id="pcaNarrative">La PCA synthétise l'information multivariée sans remplacer l'interprétation métier.</div></article>
+<div class="grid-2"><article class="panel"><div class="panel-header"><div><h2>Profils des segments</h2><p class="subtitle">Écarts normalisés entre groupes sur les principales dimensions.</p></div></div><div class="chart" id="clusterProfileChart"><div class="empty">Lancez la segmentation.</div></div></article><article class="panel"><div class="panel-header"><div><h2>Lecture des groupes</h2><p class="subtitle">Taille, caractéristiques dominantes et qualité de séparation.</p></div><span class="badge" id="silhouetteBadge">Non calculé</span></div><div id="clusterSummary"><div class="empty">Lancez la segmentation.</div></div></article></div>
+</section>
+<section class="section" id="recommendations">
+<article class="panel"><div class="panel-header"><div><h2>Plan d'action priorisé</h2><p class="subtitle">Recommandations directement reliées aux signaux observés, au public et à l'objectif du rapport.</p></div><span class="badge success" id="actionCount">0 action</span></div><div class="grid-3" id="recommendationGrid"><div class="empty" style="grid-column:1/-1">Aucune recommandation disponible.</div></div></article>
+<article class="panel"><div class="panel-header"><div><h2>Matrice Impact × Effort</h2><p class="subtitle">Positionnement des actions pour faciliter l'arbitrage.</p></div></div><div class="chart" id="impactEffortChart"><div class="empty">Aucune action.</div></div></article>
+<article class="panel"><div class="panel-header"><div><h2>Feuille de route proposée</h2><p class="subtitle">Séquençage indicatif des décisions à court, moyen et long terme.</p></div></div><div class="grid-3" id="roadmap"><div class="empty" style="grid-column:1/-1">Aucune feuille de route.</div></div></article>
+</section>
+<section class="section" id="data">
+<article class="panel"><div class="panel-header"><div><h2>Aperçu des données</h2><p class="subtitle">Échantillon des premières observations importées.</p></div><span class="badge" id="previewBadge">0 ligne</span></div><div class="table-wrap" id="dataPreview"><table><tbody><tr><td>Aucune donnée.</td></tr></tbody></table></div></article>
+<article class="panel"><div class="panel-header"><div><h2>Dictionnaire structuré des variables</h2><p class="subtitle">Chaque variable est documentée selon sa famille, son rôle, sa priorité, son agrégation et sa qualité.</p></div><span class="badge info" id="dictionaryBadge">0 variable</span></div><div class="dictionary-toolbar" id="dictionaryFamilyNav"></div><div class="table-wrap"><table><thead><tr><th>Famille</th><th>Variable</th><th>Rôle métier</th><th>Type</th><th>Priorité</th><th>Agrégation</th><th>Usage recommandé</th><th>Exemples</th><th>Distinctes</th><th>Complétude</th></tr></thead><tbody id="dictionaryTable"><tr><td colspan="10">Aucune donnée.</td></tr></tbody></table></div></article>
+</section>
+<section class="section" id="governance">
+<div class="panel-header"><div><h2>Gouvernance des variables et vues d'analyse</h2><p class="subtitle">Validez le rôle métier des colonnes avant de produire les KPI, puis filtrez l'ensemble de l'analyse sans altérer les données nettoyées.</p></div><span class="badge" id="roleValidationBadge">À valider</span></div>
+<div class="expert-ribbon"><strong>Principe de fiabilité</strong><span>Un identifiant n'est jamais additionné. Un revenu est agrégé en somme. Une dimension sert à comparer. Une date organise les périodes.</span></div>
+<div class="expert-grid">
+<article class="expert-card span-12"><h3>Validation des rôles métier</h3><p class="hint">Les propositions combinent le nom, le type, l'unicité et les valeurs. Corrigez les rôles ambigus avant l'analyse finale.</p><div class="table-wrap" style="max-height:470px"><table class="role-editor"><thead><tr><th>Variable</th><th>Type</th><th>Rôle proposé</th><th>Confiance</th><th>Agrégation</th><th>Justification</th></tr></thead><tbody id="roleEditorBody"><tr><td colspan="6">Importez des données.</td></tr></tbody></table></div><div class="expert-actions"><button class="btn btn-primary" disabled="" id="applyRolesBtn">Appliquer les rôles</button><button class="btn" disabled="" id="resetRolesBtn">Restaurer la détection</button><span class="small-muted" id="roleEditorStatus">Aucune variable analysée.</span></div></article>
+<article class="expert-card span-8"><h3>Filtres globaux</h3><p class="hint">Les filtres recalculent les KPI, graphiques, tests, conclusions et recommandations. Ils ne suppriment aucune ligne.</p><div class="filter-grid" id="globalFilterGrid"><div class="empty" style="grid-column:1/-1">Aucun filtre disponible.</div></div><div class="expert-actions"><button class="btn btn-primary" disabled="" id="applyFiltersBtn">Appliquer les filtres</button><button class="btn" disabled="" id="resetFiltersBtn">Réinitialiser</button><button class="btn" disabled="" id="saveViewBtn">Sauvegarder la vue</button></div></article>
+<article class="expert-card span-4"><h3>Comparaison de vues</h3><p class="hint">Compare la vue actuelle à la vue précédente.</p><div class="comparison-strip" id="viewComparison" style="grid-template-columns:1fr"><div class="empty">Aucune comparaison.</div></div><div class="log-list" id="savedViews" style="margin-top:10px"></div></article>
+<article class="expert-card span-12"><h3>Score de qualité en sept dimensions</h3><p class="hint">Le score global est calculé à partir de la complétude, validité, cohérence, unicité, intégrité, actualité et exactitude probable.</p><div class="quality-seven" id="qualitySeven"><div class="empty" style="grid-column:1/-1">Diagnostic indisponible.</div></div></article>
+<article class="expert-card span-12"><h3>Problèmes de qualité et corrections proposées</h3><div class="table-wrap"><table><thead><tr><th>Dimension</th><th>Variable</th><th>Problème</th><th>Lignes</th><th>%</th><th>Gravité</th><th>Exemples</th><th>Correction proposée</th></tr></thead><tbody id="qualityIssuesBody"><tr><td colspan="8">Aucun diagnostic.</td></tr></tbody></table></div></article>
+</div>
+</section>
+<section class="section" id="cleaning">
+<div class="panel-header"><div><h2>Atelier de nettoyage intelligent</h2><p class="subtitle">Prévisualisez, validez, annulez et documentez chaque transformation. Les données originales restent conservées.</p></div><span class="badge" id="cleaningBadge">0 transformation</span></div>
+<div class="expert-grid">
+<article class="expert-card span-8"><h3>Transformations proposées</h3><p class="hint">Les corrections sûres peuvent être sélectionnées rapidement. Les imputations et changements structurels nécessitent une validation humaine.</p><div class="cleaning-list" id="cleaningRules"><div class="empty">Importez un fichier pour générer les règles.</div></div><div class="expert-actions"><button class="btn btn-primary" disabled="" id="applyCleaningBtn">Appliquer la sélection</button><button class="btn" disabled="" id="selectSafeBtn">Sélectionner les corrections sûres</button><button class="btn" disabled="" id="undoCleaningBtn">Annuler la dernière étape</button><button class="btn btn-danger" disabled="" id="restoreOriginalBtn">Restaurer l'original</button><button class="btn" disabled="" id="exportCleanBtn">Exporter les données nettoyées</button></div></article>
+<article class="expert-card span-4"><h3>Journal des transformations</h3><p class="hint">Traçabilité complète des règles appliquées.</p><div class="log-list" id="transformationLog"><div class="empty">Aucune transformation.</div></div></article>
+<article class="expert-card span-12"><h3>Aperçu avant / après</h3><div class="preview-table table-wrap"><table><thead id="cleanPreviewHead"><tr><th>Aperçu</th></tr></thead><tbody id="cleanPreviewBody"><tr><td>Aucune transformation sélectionnée.</td></tr></tbody></table></div></article>
+</div>
+</section>
+<section class="section" id="expertStatistics">
+<div class="panel-header"><div><h2>Tests statistiques, narration et prévisions</h2><p class="subtitle">Onyx sélectionne les méthodes compatibles avec les variables disponibles, vérifie les conditions et explique les résultats sans confondre association et causalité.</p></div><span class="badge" id="testBadge">0 test</span></div>
+<div class="expert-grid">
+<article class="expert-card span-12"><h3>Conclusions structurées et niveaux de confiance</h3><div class="finding-grid" id="expertFindings"><div class="empty" style="grid-column:1/-1">Aucune conclusion disponible.</div></div></article>
+<article class="expert-card span-12"><h3>Tests sélectionnés automatiquement</h3><p class="hint">Question → méthode → hypothèses → statistique → significativité → taille d'effet → interprétation → limites.</p><div class="table-wrap"><table><thead><tr><th>Question</th><th>Méthode</th><th>Variables</th><th>N</th><th>Statistique</th><th>p-value</th><th>Effet</th><th>Interprétation</th><th>Limites</th></tr></thead><tbody id="testsBody"><tr><td colspan="9">Aucun test disponible.</td></tr></tbody></table></div></article>
+<article class="expert-card span-4"><h3>Paramètres de prévision</h3><div class="filter-field"><label>Date</label><select id="forecastDate"></select></div><div class="filter-field" style="margin-top:9px"><label>Mesure</label><select id="forecastMetric"></select></div><div class="filter-field" style="margin-top:9px"><label>Horizon</label><select id="forecastHorizon"><option value="3">3 périodes</option><option selected="" value="6">6 périodes</option><option value="12">12 périodes</option></select></div><div class="expert-actions"><button class="btn btn-primary" disabled="" id="runForecastBtn">Comparer les modèles</button></div><div class="forecast-status blocked" id="forecastStatus" style="margin-top:12px">Une date et une mesure sont nécessaires.</div></article>
+<article class="expert-card span-8"><h3>Prévision et intervalle d'incertitude</h3><div class="chart" id="forecastChart" style="height:390px"><div class="empty">Aucune prévision.</div></div></article>
+<article class="expert-card span-12"><h3>Comparaison des modèles</h3><div class="table-wrap"><table><thead><tr><th>Modèle</th><th>MAE</th><th>RMSE</th><th>MAPE</th><th>Jeu de test</th><th>Décision</th></tr></thead><tbody id="forecastModelsBody"><tr><td colspan="6">Aucun modèle évalué.</td></tr></tbody></table></div><div class="table-wrap" style="margin-top:12px"><table><thead><tr><th>Période</th><th>Prévision</th><th>Borne basse</th><th>Borne haute</th></tr></thead><tbody id="forecastValuesBody"><tr><td colspan="4">Aucune projection.</td></tr></tbody></table></div></article>
+</div>
+</section>
+<section class="section" id="anomalyExplorer">
+<div class="panel-header"><div><h2>Explorateur d'anomalies</h2><p class="subtitle">Chaque anomalie est rattachée à une ligne, une variable, une méthode, une valeur attendue, une gravité et une action recommandée.</p></div><span class="badge" id="anomalyDetailBadge">0 anomalie</span></div>
+<article class="expert-card"><div class="anomaly-toolbar"><select id="anomalySeverity"><option value="">Toutes les gravités</option><option>Critique</option><option>Élevée</option><option>Moyenne</option></select><select id="anomalyMethod"><option value="">Toutes les méthodes</option></select><select id="anomalyColumn"><option value="">Toutes les variables</option></select><input id="anomalySearch" placeholder="Rechercher un identifiant ou une valeur"/></div><div class="table-wrap"><table><thead><tr><th>Ligne</th><th>Identifiant</th><th>Variable</th><th>Valeur observée</th><th>Plage attendue</th><th>Écart / score</th><th>Méthode</th><th>Gravité</th><th>Explication</th><th>Recommandation</th></tr></thead><tbody id="anomalyDetailsBody"><tr><td colspan="10">Aucune anomalie détaillée.</td></tr></tbody></table></div><div class="expert-actions"><button class="btn" disabled="" id="exportAnomaliesBtn">Exporter les anomalies</button></div></article>
+</section>
+<div class="footer">Onyx Data Intelligence — analyse experte, variables structurées et rapports professionnels.</div>
+</main>
+</div>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script><script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./js/01-onyx-core.js"></script><script src="./js/02-onyx-expert-engine.js"></script><script src="./js/03-onyx-adaptive-reporting.js"></script><script src="./js/04-onyx-report-polish.js"></script><script src="./js/05-supabase-client.js"></script><script src="./js/06-onyx-auth.js"></script></body>
+</html>
