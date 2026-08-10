@@ -1,0 +1,28 @@
+name: Rapport de bug
+description: Signaler un dysfonctionnement dans Onyx Data Intelligence
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Que s'est-il passé ?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Étapes pour reproduire
+      description: Décrivez les étapes de manière précise.
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Navigateur
+      placeholder: Chrome, Edge, Firefox...
+  - type: textarea
+    id: expected
+    attributes:
+      label: Résultat attendu

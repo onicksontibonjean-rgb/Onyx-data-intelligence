@@ -1,0 +1,17 @@
+name: Proposition d'amélioration
+description: Proposer une nouvelle fonctionnalité pour Onyx
+title: "[FEATURE] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: Besoin métier
+      description: Quel problème cette évolution doit-elle résoudre ?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solution proposée
+      description: Décrivez le comportement souhaité.
