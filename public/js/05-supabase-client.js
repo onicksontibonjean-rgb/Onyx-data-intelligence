@@ -8,7 +8,7 @@
  */
 
 window.ONYX_AUTH_CONFIG = Object.freeze({
-  supabaseUrl: "https://gnfswkaoktteqsprhmyr.supabase1.co",
+  supabaseUrl: "https://gnfswkaoktteqsprhmyr.supabase.co",
   supabasePublishableKey: "sb_publishable_D-tj4nD4d5T_nHzayOZdcQ_e9xO9upM",
   applicationName: "Onyx Data Intelligence"
 });
