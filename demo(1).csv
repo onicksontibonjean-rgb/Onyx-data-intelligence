@@ -1,0 +1,7 @@
+Date,Agence,Produit,Clients,Transactions,Revenus,Couts,Objectif,Statut
+2026-01-31,Delmas,Produit A,120,340,850000,510000,800000,Atteint
+2026-02-28,Petion-Ville,Produit A,138,390,940000,560000,900000,Atteint
+2026-03-31,Delmas,Produit B,110,305,780000,500000,820000,Sous objectif
+2026-04-30,Petion-Ville,Produit B,155,430,1100000,620000,1000000,Atteint
+2026-05-31,Delmas,Produit A,168,470,1240000,690000,1150000,Atteint
+2026-06-30,Petion-Ville,Produit C,142,410,990000,590000,1050000,Sous objectif
